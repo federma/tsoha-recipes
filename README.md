@@ -1,5 +1,5 @@
 # Reseptisovellus
-Sovelluksen avulla voi tallentaa ja tarkastella ruokareseptejä. Lisäksi tarkoitus on, että sovelluksessa voisi valita reseptejä sekä syöjien määrän ja näillä tiedoilla luoda valmiin ostoslistan.
+Sovelluksen avulla voi (sen valmistuttua) tallentaa ja tarkastella ruokareseptejä. Lisäksi tarkoitus on, että sovelluksessa voisi valita reseptejä sekä syöjien määrän ja näillä tiedoilla luoda valmiin ostoslistan.
 
 Sovelluksen ominaisuuksia on tarkoitus olla ainakin:
 
