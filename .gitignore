@@ -1,3 +1,9 @@
-# Environment
+# environment
 venv/
 .env
+
+# cache
+__pycache__/
+
+# scripts for starting development environment etc
+start_ssh_env_postgresql.sh
