@@ -1,0 +1,14 @@
+<p>
+Todo: Etusivun napit, ulkoasu ym
+</p>
+{% if session.user_id %}
+Olet kirjautunut sisään.
+<br>
+<a href="/recipes">Tarkastele reseptejä</a>
+<br>
+<a href="/new_recipe">Lisää uusi resepti</a>
+<br>
+<a href="/logout">Kirjaudu ulos</a>
+{% else %}
+<a href="/login">Kirjaudu sisään</a>
+{% endif %}

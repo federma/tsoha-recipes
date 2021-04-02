@@ -1,0 +1,15 @@
+<hr>
+{% for recipe in all_recipes %}
+<i>Id:</i> {{ recipe[0] }}
+<p>
+<i>Nimi:</i> {{ recipe[1] }}
+<p>
+<i>Valmistusohje:</i> {{ recipe[2] }}
+<p>
+<i>Ohjeen laatija:</i> {{ recipe[4] }}
+<p>
+<i>Resepti jätetty:</i> {{ recipe[3].strftime("%Y-%m-%d %H:%M:%S") }}
+<hr>
+{% endfor %}
+<br>
+<a href="/">Palaa etusivulle</a>

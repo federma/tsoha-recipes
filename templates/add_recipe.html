@@ -1,0 +1,12 @@
+<form action="/new_recipe" method="POST">
+    Reseptin nimi: <input type="text" name="recipe_name">
+    <br>
+    <!-- This is a temporary solution, I'll probably need to add some javascript to dynamically change the number of inputs. Now limited to three just for testing purposes. -->
+    Ainesosa 1: <input type="text" name="item1">
+    Ainesosa 2: <input type="text" name="item2">
+    Ainesosa 3: <input type="text" name="item3">
+    Valmistusohje: <br>
+    <textarea name="instructions" rows="10" cols="40"></textarea>
+    <br>
+    <input type="submit" value="Lisää resepti">
+</form>
