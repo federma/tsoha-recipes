@@ -1,0 +1,15 @@
+<i>Nimi: </i> {{ details[1] }}
+<br>
+<i>Ainekset: </i>
+<p>
+<ul>
+    {% for item in ingredients %}
+    <li>{{ item[1] }} {{ item[2] }}{{ item[3] }}</li>
+    {% endfor %}
+</ul>
+</p>
+<i>Valmistusohje: </i>
+<br>
+{{ details[2] }}
+<br>
+<a href="/">Palaa etusivulle</a>

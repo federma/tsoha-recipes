@@ -56,4 +56,13 @@ def new_recipe():
 @app.route("/recipes")
 def recipes_show():
     list_of_recipes = recipes.list_recipes()
-    return render_template("show_recipes.html", all_recipes = list_of_recipes) 
+    print(list_of_recipes)
+    return render_template("show_recipes.html", all_recipes = list_of_recipes)
+
+@app.route("/recipe/<int:recipe_id>")
+def recipe(recipe_id):
+    recipe_details = recipes.get_details_by_id(recipe_id)
+    print(recipe_details)
+    ingredients = recipes.get_ingredients_by_id(recipe_id)
+    print(ingredients)
+    return render_template("recipe.html", details=recipe_details, ingredients=ingredients)

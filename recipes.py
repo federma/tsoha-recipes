@@ -33,7 +33,27 @@ def get_recipe_id(name):
         return False
 
 def list_recipes():
-    sql = "SELECT * FROM recipes"
+    sql = "SELECT R.*, CONCAT('/recipe/', R.id), U.username FROM recipes R, users U WHERE R.user_id=U.id"
     result = db.session.execute(sql)
     return result.fetchall()
-        
+
+def list_ids_and_names():
+    ids = []
+    names = []
+    sql = "SELECT id, name FROM recipes"
+    result = db.session.execute(sql)
+    id_name_all = result.fetchall()
+    for id, name in id_name_all:
+        ids.append(id)
+        names.append(name)
+    return ids, names
+
+def get_details_by_id(recipe_id):
+    sql = "SELECT * FROM recipes WHERE id=:id"
+    result = db.session.execute(sql, {"id": recipe_id})
+    return result.fetchone()
+
+def get_ingredients_by_id(recipe_id):
+    sql = "SELECT * FROM ingredients WHERE recipe_id=:recipe_id"
+    result = db.session.execute(sql, {"recipe_id": recipe_id})
+    return result.fetchall()        
