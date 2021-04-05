@@ -1,7 +1,7 @@
 from werkzeug.security import check_password_hash
 from app import app
 from flask import render_template, request, redirect
-import users, recipes
+import users, recipes, comments
 
 @app.route("/")
 def index():
@@ -59,10 +59,16 @@ def recipes_show():
     print(list_of_recipes)
     return render_template("show_recipes.html", all_recipes = list_of_recipes)
 
-@app.route("/recipe/<int:recipe_id>")
+@app.route("/recipe/<int:recipe_id>", methods=["GET", "POST"])
 def recipe(recipe_id):
+    if request.method == "POST":
+        comment = request.form["comment"]
+        if not comments.add_comment(comment, recipe_id):
+            return render_template("error.html", message="Kommentin lisääminen epäonnistui")
+
     recipe_details = recipes.get_details_by_id(recipe_id)
     print(recipe_details)
     ingredients = recipes.get_ingredients_by_id(recipe_id)
     print(ingredients)
-    return render_template("recipe.html", details=recipe_details, ingredients=ingredients)
+    comment_list = comments.get_comments(recipe_id)
+    return render_template("recipe.html", details=recipe_details, ingredients=ingredients, comment_list=comment_list)

@@ -24,7 +24,8 @@ CREATE TABLE comments (
     id SERIAL PRIMARY KEY,
     comment TEXT,
     sent_at TIMESTAMP,
-    recipe_id INTEGER REFERENCES recipes
+    recipe_id INTEGER REFERENCES recipes,
+    user_id INTEGER REFERENCES users
 );
 
 CREATE TABLE ratings (

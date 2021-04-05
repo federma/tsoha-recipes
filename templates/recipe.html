@@ -13,3 +13,24 @@
 {{ details[2] }}
 <br>
 <a href="/">Palaa etusivulle</a>
+<p>
+    <hr>
+    {% for c in comment_list %}
+    <i>Kommentoija: </i> {{ c[5] }}
+    <br>
+    <i>Kommentti annettu: </i> {{ c[2].strftime("%Y-%m-%d %H:%M:%S") }}
+    <br>
+    {{ c[1] }}
+    <hr>
+    {% endfor %}
+</p>
+
+<!-- tähän pitäisi lisätä mahdollisuus kommentoida ja antaa arvio reseptistä -->
+<form action="{{ request.path }}" method="POST">
+    <br>
+    Kommentti:
+    <br>
+    <textarea name="comment" rows="10" cols="40"></textarea>
+    <br>
+    <input type="submit" value="Lisää kommentti">
+</form>
