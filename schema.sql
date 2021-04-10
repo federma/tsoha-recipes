@@ -8,6 +8,7 @@ CREATE TABLE recipes (
     id SERIAL PRIMARY KEY,
     name TEXT UNIQUE,
     instructions TEXT,
+    portions INTEGER,
     created_at TIMESTAMP,
     user_id INTEGER REFERENCES users 
 );

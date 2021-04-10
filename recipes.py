@@ -2,22 +2,25 @@ from db import db
 
 import users
 
-def enter(recipe_name, instructions, item1, item2, item3):
+def enter(recipe_name, portions, instructions, items):
     user_id = users.user_id()
+
     try:
-        sql = "INSERT INTO recipes (name, instructions, created_at, user_id) VALUES (:name, :instructions, NOW(), :user_id)"
-        db.session.execute(sql, {"name": recipe_name, "instructions": instructions, "user_id": user_id})
+        sql = "INSERT INTO recipes (name, instructions, portions, created_at, user_id) VALUES (:name, :instructions, :portions, NOW(), :user_id)"
+        db.session.execute(sql, {"name": recipe_name, "instructions": instructions, "portions":portions, "user_id": user_id})
         db.session.commit()
     except:
         return False
+
     try:
         recipe_id = get_recipe_id(recipe_name)
-        items = [item1, item2, item3]
-        # atm this can fail for some particular item and then recipe/ingredients would be inserted only partially, needs a fix later
+        # atm this can fail midway for some particular item and then recipe/ingredients would be inserted only partially - need to make all inserts in one transaction?
         for item in items:
-            unit = "g"
-            sql = "INSERT INTO ingredients (name, amount, unit, recipe_id) VALUES (:item, 42, :unit, :recipe_id)"
-            db.session.execute(sql, {"item": item, "unit": unit, "recipe_id": recipe_id})
+            # unpack values
+            print("tulin tänne ja itemina on ", item)
+            ingredient, amount, unit = item
+            sql = "INSERT INTO ingredients (name, amount, unit, recipe_id) VALUES (:ingredient, :amount, :unit, :recipe_id)"
+            db.session.execute(sql, {"ingredient": ingredient, "amount":amount, "unit": unit, "recipe_id": recipe_id})
             db.session.commit()
     except:
         return False
@@ -37,6 +40,7 @@ def list_recipes():
     result = db.session.execute(sql)
     return result.fetchall()
 
+# this is not used anywhere atm -> possibly remove later
 def list_ids_and_names():
     ids = []
     names = []
@@ -56,4 +60,9 @@ def get_details_by_id(recipe_id):
 def get_ingredients_by_id(recipe_id):
     sql = "SELECT * FROM ingredients WHERE recipe_id=:recipe_id"
     result = db.session.execute(sql, {"recipe_id": recipe_id})
-    return result.fetchall()        
+    return result.fetchall()
+
+def made_by_user(user_id):
+    sql = "SELECT *, CONCAT('/recipe/', id) FROM recipes WHERE user_id=:user_id"
+    result = db.session.execute(sql, {"user_id": user_id})
+    return result.fetchall()

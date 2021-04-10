@@ -32,3 +32,12 @@ def register(username, password):
 def user_id():
     """Return user id"""
     return session.get("user_id", 0)
+
+def user_name():
+    """Return user name, if logged in, else returns false"""
+    u_id = user_id()
+    if u_id == 0:
+        return False
+    sql = "SELECT username FROM users WHERE id=:u_id"
+    result = db.session.execute(sql, {"u_id":u_id})
+    return result.fetchone()[0]

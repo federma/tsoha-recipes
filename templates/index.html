@@ -1,14 +1,32 @@
-<p>
-Todo: Etusivun napit, ulkoasu ym
-</p>
-{% if session.user_id %}
-Olet kirjautunut sisään.
-<br>
-<a href="/recipes">Tarkastele reseptejä</a>
-<br>
-<a href="/new_recipe">Lisää uusi resepti</a>
-<br>
-<a href="/logout">Kirjaudu ulos</a>
-{% else %}
-<a href="/login">Kirjaudu sisään</a>
-{% endif %}
+{% extends "base_template.html" %}
+
+{% block title %}Etusivu{% endblock %}
+
+{% block main %}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col">
+            <h2>Tervetuloa reseptisovellukseen!</h2>
+
+            <p>Tämä on Helsingin yliopiston tietokantasovellus-kurssin harjoitustyö. Sovellukseen voit tallentaa omia reseptejäsi ja tarkastella muiden käyttäjien jättämiä reseptejä. Lisäksi voit kommentoida reseptejä.</p>
+
+            <p>Sovellus on vielä hyvin keskeneräinen sekä ulkoasun että toimintojen osalta. Tarkoitus on lisätä sovellukseen vielä ainakin mahdollisuus arvioida reseptejä sekä luoda ostoslista. Mahdollisesti kirjautunut käyttäjä voi myöhemmin myös mm. muokata luomaansa reseptiä.</p>
+        
+        </div>
+    </div>
+
+    <div class="row">
+        {% if session.user_id %}
+        <p>Olet kirjautunut sisään.</p>
+        {% else %}
+        <p>Et ole kirjautunut sisään. Voit luoda tunnuksen tai kirjautua sovellukseen aiemmin luomallasi tunnuksella. \
+            Voit myös siirtyä tarkastelemaan reseptejä ilman kirjautumista, mutta uusien reseptien luominen sekä kommentointi vaatii kirjautumisen.
+        </p>
+        {% endif %}
+    </div>
+
+</div>
+
+{% endblock %}

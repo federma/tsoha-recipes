@@ -1,13 +1,52 @@
+{% extends "base_template.html" %}
+
+{% block title %}Uusi resepti{% endblock %}
+
+{% block main %}
+
 <form action="/new_recipe" method="POST">
+
     Reseptin nimi: <input type="text" name="recipe_name">
     <br>
-    <!-- This is a temporary solution, I'll probably need to add some javascript to dynamically change the number of inputs. Now limited to three just for testing purposes. -->
-    Ainesosa 1: <input type="text" name="item1">
-    Ainesosa 2: <input type="text" name="item2">
-    Ainesosa 3: <input type="text" name="item3">
+
+    Annosten määrä: <select name="portions" id="portions">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+    <br>
+
+    <div id="newElementId">Ilmoita reseptin ainesosat ja määrät:</div>
+
+    <div id="dynamicCheck">
+        <input type="button" value="Lisää ainesosia" onclick="createNewElement();" />
+    </div>
+
     Valmistusohje:
     <br>
     <textarea name="instructions" rows="10" cols="40"></textarea>
     <br>
     <input type="submit" value="Lisää resepti">
 </form>
+
+
+<script type="text/JavaScript">
+    function createNewElement() {
+        // First create a DIV element.
+        var txtNewInputBox = document.createElement('div');
+    
+        // Then add the content (a new input box) of the element.
+        txtNewInputBox.innerHTML = "<input type='text' name='ingredient' id='newInputBox'> \
+            <input type='text' name='amount'> \
+            <select name='unit'> \
+                <option value='g'>grammaa</option> \
+                <option value='ml'>millilitraa</option> \
+            </select>"
+    
+        // Finally put it where it is supposed to appear.
+        document.getElementById("newElementId").appendChild(txtNewInputBox);
+    }
+    </script>
+
+{% endblock %}

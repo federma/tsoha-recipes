@@ -1,3 +1,9 @@
+{% extends "base_template.html" %}
+
+{% block title %}Reseptin tiedot{% endblock %}
+
+{% block main %}
+
 <i>Nimi: </i> {{ details[1] }}
 <br>
 <i>Ainekset: </i>
@@ -7,6 +13,7 @@
     <li>{{ item[1] }} {{ item[2] }}{{ item[3] }}</li>
     {% endfor %}
 </ul>
+<i>Annokset: </i>{{ details[3]}}
 </p>
 <i>Valmistusohje: </i>
 <br>
@@ -25,7 +32,6 @@
     {% endfor %}
 </p>
 
-<!-- tähän pitäisi lisätä mahdollisuus kommentoida ja antaa arvio reseptistä -->
 <form action="{{ request.path }}" method="POST">
     <br>
     Kommentti:
@@ -34,3 +40,5 @@
     <br>
     <input type="submit" value="Lisää kommentti">
 </form>
+
+{% endblock %}
