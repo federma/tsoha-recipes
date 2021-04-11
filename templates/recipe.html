@@ -4,41 +4,51 @@
 
 {% block main %}
 
-<i>Nimi: </i> {{ details[1] }}
-<br>
-<i>Ainekset: </i>
-<p>
-<ul>
-    {% for item in ingredients %}
-    <li>{{ item[1] }} {{ item[2] }}{{ item[3] }}</li>
-    {% endfor %}
-</ul>
-<i>Annokset: </i>{{ details[3]}}
-</p>
-<i>Valmistusohje: </i>
-<br>
-{{ details[2] }}
-<br>
-<a href="/">Palaa etusivulle</a>
-<p>
-    <hr>
-    {% for c in comment_list %}
-    <i>Kommentoija: </i> {{ c[5] }}
-    <br>
-    <i>Kommentti annettu: </i> {{ c[2].strftime("%Y-%m-%d %H:%M:%S") }}
-    <br>
-    {{ c[1] }}
-    <hr>
-    {% endfor %}
-</p>
+<div class="container">
+    <div class="row">
+        <div class="col">
 
-<form action="{{ request.path }}" method="POST">
-    <br>
-    Kommentti:
-    <br>
-    <textarea name="comment" rows="10" cols="40"></textarea>
-    <br>
-    <input type="submit" value="Lisää kommentti">
-</form>
+            <!--name of the recipe-->
+            <h2>{{ details[1] }}</h2>
+
+            <h5>Ainekset</h5>
+            <ul>
+                {% for item in ingredients %}
+                <li>{{ item[1] }} {{ item[2] }} {{ item[3] }}</li>
+                {% endfor %}
+            </ul>
+
+            <p>Annoksia {{ details[3] }} kpl</p>
+
+            <h5>Valmistusohje</h5>
+
+            <p>
+                {{ details[2] }}
+            </p>
+
+            <h5>Kommentit</h5>
+
+            {% for c in comment_list %}
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title">{{ c[5] }} sanoo</h6>
+                    <p class="card-subtitle mb-2 text-muted">{{ c[2].strftime("%Y-%m-%d %H:%M:%S") }}</p>
+                    <p class="card-text">{{ c[1] }}</p>
+                </div>
+            </div>
+            {% endfor %}
+
+
+            <form action="{{ request.path }}" method="POST">
+                <div class="form-group">
+                    <label for="comment">Voit lisätä oman kommentin reseptiin</label>
+                    <textarea name="comment" class="form-control" rows="5"></textarea>
+                    <button type="submit" class="btn btn-primary">Lisää kommentti</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
 
 {% endblock %}

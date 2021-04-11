@@ -14,6 +14,7 @@ def enter(recipe_name, portions, instructions, items):
 
     try:
         recipe_id = get_recipe_id(recipe_name)
+
         # atm this can fail midway for some particular item and then recipe/ingredients would be inserted only partially - need to make all inserts in one transaction?
         for item in items:
             # unpack values
@@ -36,6 +37,7 @@ def get_recipe_id(name):
         return False
 
 def list_recipes():
+    """Returns all details in the recipes table and also adds url fields and recipes creators name"""
     sql = "SELECT R.*, CONCAT('/recipe/', R.id), U.username FROM recipes R, users U WHERE R.user_id=U.id"
     result = db.session.execute(sql)
     return result.fetchall()

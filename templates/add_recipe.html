@@ -4,49 +4,56 @@
 
 {% block main %}
 
-<form action="/new_recipe" method="POST">
+<div class="container">
+    <div class="row">
+        <form action="/new_recipe" method="POST">
 
-    Reseptin nimi: <input type="text" name="recipe_name">
-    <br>
+            <div class="form-group">
+                <label for="recipe_name">Reseptin nimi</label>
+                <input type="text" class="form-control" name="recipe_name">
+            </div>
 
-    Annosten määrä: <select name="portions" id="portions">
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-    </select>
-    <br>
+            <div class="form-group">
+                <label for="portions">Annosten määrä</label>
+                <select name="portions" class="form-control" id="portions" style="width:auto">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
 
-    <div id="newElementId">Ilmoita reseptin ainesosat ja määrät:</div>
+            <div id="newElementId">Ilmoita reseptin ainesosat ja määrät:</div>
 
-    <div id="dynamicCheck">
-        <input type="button" value="Lisää ainesosia" onclick="createNewElement();" />
+            <div id="dynamicCheck">
+                <input type="button" value="Lisää ainesosia" onclick="createNewElement();" />
+            </div>
+
+            <div class="form-group">
+                <label for="instructions">Valmistusohje</label>
+                <textarea name="instructions" class="form-control" rows="5"></textarea>
+                <button type="submit" class="btn btn-primary">Lisää resepti</button>
+            </div>
+
+        </form>
+
     </div>
-
-    Valmistusohje:
-    <br>
-    <textarea name="instructions" rows="10" cols="40"></textarea>
-    <br>
-    <input type="submit" value="Lisää resepti">
-</form>
+</div>
 
 
 <script type="text/JavaScript">
     function createNewElement() {
         // First create a DIV element.
         var txtNewInputBox = document.createElement('div');
+        txtNewInputBox.class="container"
     
         // Then add the content (a new input box) of the element.
-        txtNewInputBox.innerHTML = "<input type='text' name='ingredient' id='newInputBox'> \
-            <input type='text' name='amount'> \
-            <select name='unit'> \
-                <option value='g'>grammaa</option> \
-                <option value='ml'>millilitraa</option> \
-            </select>"
+        txtNewInputBox.innerHTML = `{% include "ingredient_input_form.html" %}`
     
         // Finally put it where it is supposed to appear.
         document.getElementById("newElementId").appendChild(txtNewInputBox);
     }
-    </script>
+
+</script>
 
 {% endblock %}

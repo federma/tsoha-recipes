@@ -8,7 +8,7 @@ import comments
 
 @app.route("/")
 def index():
-    # todo front page with buttons (login, recipes, make a shopping list)
+    # current front page just has some info about the app, will need some more content or maybe I'll just drop this page
     return render_template("index.html")
 
 
@@ -33,7 +33,7 @@ def login():
         username = request.form["username"]
         password = request.form["password"]
         if users.login(username, password):
-            return redirect("/")
+            return redirect("/profile")
         else:
             return render_template("error.html", message="Väärä tunnus tai salasana")
 
@@ -41,7 +41,7 @@ def login():
 @app.route("/logout")
 def logout():
     users.logout()
-    return redirect("/")
+    return redirect("/profile")
 
 
 @app.route("/new_recipe", methods=["GET", "POST"])
@@ -58,7 +58,7 @@ def new_recipe():
             int, form.getlist("amount")), form.getlist("unit"))
 
         if recipes.enter(recipe_name, portions, instructions, items):
-            return redirect("/")
+            return redirect("/recipes")
         else:
             return render_template("error.html", message="Reseptin lisääminen epäonnistui")
 
@@ -100,7 +100,7 @@ def profile():
         username = request.form["username"]
         password = request.form["password"]
         if users.login(username, password):
-            return redirect("/")
+            return redirect("/profile")
         else:
             return render_template("error.html", message="Väärä tunnus tai salasana")
 

@@ -18,7 +18,8 @@
             <a href="{{ recipe[6] }}" class="list-group-item list-group-item-action">{{ recipe[1] }}</a>
         </div>
 
-        <!--    
+        <!-- 
+            might change the appereance to a card later, this "stretched-link" makes the whole card clickable   
             <div class="card">
                 <div class="card-body">
                     <a href="{{ recipe[6] }}" class="stretched-link">{{ recipe[1] }}</a>
@@ -26,13 +27,13 @@
                     
                 </div>
             </div>
-            -->
+        -->
 
         {% endfor %}
 
         {% else %}
         <p>
-            Et ole kirjautunut sisään. Voit luoda tunnuksen tai kirjautua sovellukseen aiemmin luomallasi
+            Et ole kirjautunut sisään. Voit <a href="/register">luoda tunnuksen</a> tai kirjautua sovellukseen aiemmin luomallasi
             tunnuksella.
             Voit myös siirtyä tarkastelemaan reseptejä ilman kirjautumista, mutta uusien reseptien luominen sekä
             kommentointi vaatii kirjautumisen.
