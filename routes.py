@@ -53,11 +53,12 @@ def new_recipe():
         print(form)
         recipe_name = form["recipe_name"]
         portions = int(form["portions"])
+        description = form["description"]
         instructions = form["instructions"]
         items = zip(form.getlist("ingredient"), map(
             int, form.getlist("amount")), form.getlist("unit"))
 
-        if recipes.enter(recipe_name, portions, instructions, items):
+        if recipes.enter(recipe_name, description, portions, instructions, items):
             return redirect("/recipes")
         else:
             return render_template("error.html", message="Reseptin lisääminen epäonnistui")
@@ -66,7 +67,7 @@ def new_recipe():
 @app.route("/recipes")
 def recipes_show():
     list_of_recipes = recipes.list_recipes()
-    print(list_of_recipes)
+    #print(list_of_recipes)
     return render_template("show_recipes.html", all_recipes=list_of_recipes)
 
 
@@ -76,11 +77,12 @@ def recipe(recipe_id):
         comment = request.form["comment"]
         if not comments.add_comment(comment, recipe_id):
             return render_template("error.html", message="Kommentin lisääminen epäonnistui")
-
+    #print(recipe_id)
+    recipes.add_view(recipe_id)
     recipe_details = recipes.get_details_by_id(recipe_id)
-    print(recipe_details)
+    #print(recipe_details)
     ingredients = recipes.get_ingredients_by_id(recipe_id)
-    print(ingredients)
+    #print(ingredients)
     comment_list = comments.get_comments(recipe_id)
     return render_template("recipe.html", details=recipe_details, ingredients=ingredients, comment_list=comment_list)
 
@@ -103,4 +105,29 @@ def profile():
             return redirect("/profile")
         else:
             return render_template("error.html", message="Väärä tunnus tai salasana")
+
+@app.route("/grade", methods=["POST"])
+def grade():
+    recipe_id = request.form["r_id"]
+    recipe_grade = request.form["grade"]
+    u_id = users.user_id()
+    #print(recipe_id, recipe_grade, u_id)
+    #todo add grading to db
+    recipes.add_grading(recipe_id, u_id, recipe_grade)
+    return redirect("/recipe/" + recipe_id)
+
+@app.route("/find_recipe", methods=["POST"])
+def find_recipe():
+    search_string = request.form["find_recipe"]
+    list_of_recipes = recipes.find_recipes(search_string)
+    return render_template("show_recipes.html", all_recipes=list_of_recipes)
+
+@app.route("/sort_recipes", methods=["POST"])
+def sort_recipes():
+    sorting_method = request.form["sorting_btn"]
+    print("saatu ", sorting_method)
+    print(type(sorting_method))
+    list_of_recipes = recipes.sort_recipes(sorting_method)
+    return render_template("show_recipes.html", all_recipes=list_of_recipes)
+
 

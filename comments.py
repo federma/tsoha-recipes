@@ -14,7 +14,7 @@ def add_comment(comment, recipe_id):
 
 def get_comments(recipe_id):
     """Get all comments for a recipe-id sorted from latest to oldest"""
-    sql = "SELECT C.*, U.username FROM comments C, users U WHERE C.recipe_id=:recipe_id AND C.user_id=U.id ORDER BY C.sent_at DESC"
+    sql = "SELECT C.id, C.comment, C.sent_at, C.recipe_id, C.user_id, U.username FROM comments C, users U WHERE C.recipe_id=:recipe_id AND C.user_id=U.id ORDER BY C.sent_at DESC"
     result = db.session.execute(sql, {"recipe_id": recipe_id})
     return result.fetchall()
     

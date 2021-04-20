@@ -1,14 +1,15 @@
 <div class="row">
     <div class="col">
-        <input type='text' class='form-control' placeholder='Ainesosa' name='ingredient' id='newInputBox'> \
+        <input type='text' class='form-control' placeholder='Ainesosa' name='ingredient' id='newInputBox' required>
     </div>
     <div class="col-4">
-        <input type='text' class='form-control' placeholder='Määrä' name='amount'> \
+        <input type='text' class='form-control' placeholder='Määrä' name='amount' required>
     </div>
     <div class="col-2">
-        <select class='form-select' name='unit'> \
-            <option value='g'>grammaa</option> \
-            <option value='ml'>millilitraa</option> \
+        <select class='form-select' name='unit' required>
+            <option value='g'>grammaa</option>
+            <option value='ml'>millilitraa</option>
+            <option value="l">litraa</option>
         </select>
     </div>
 </div>

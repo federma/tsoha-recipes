@@ -1,3 +1,5 @@
+{% set active_page = "recipes" %}
+
 {% extends "base_template.html" %}
 
 {% block title %}Reseptit{% endblock %}
@@ -5,22 +7,51 @@
 {% block main %}
 
 <div class="container">
-    {% for recipe in all_recipes %}
-    <div class="row">
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ recipe[1] }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><i>Ohjeen tekijä: </i>{{ recipe[7] }}</h6>
-                    <h6 class="card-subtitle mb-2 text-muted"><i>Resepti jätetty: </i>{{ recipe[4].strftime("%Y-%m-%d")
-                        }}</h6>
-                    <p class="card-text">{{ recipe[2] }}</p>
-                    <a href="{{ recipe[6] }}" class="card-link">Katso resepti</a>
-                </div>
-            </div>
+  <div class="row">
+    <form action="/find_recipe" method="POST">
+      <div class="input-group m-1">
+        <input type="text" class="form-control" name="find_recipe"
+          placeholder="Hae reseptiä nimellä. Tyhjä haku listaa kaikki reseptit.">
+        <button type="submit" class="btn btn-light btn-sm">Hae</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="row">
+    <form action="/sort_recipes" method="POST">
+      <div class="input-group m-1">
+        <button name="sorting_btn" value="1" type="submit" class="btn btn-dark btn-sm mx-1">Uusin ensin</button>
+        <button name="sorting_btn" value="2" type="submit" class="btn btn-dark btn-sm mx-1">Vanhin ensin</button>
+        <button name="sorting_btn" value="3" type="submit" class="btn btn-dark btn-sm mx-1">Parhaiten arvioitu ensin</button>
+        <button name="sorting_btn" value="4" type="submit" class="btn btn-dark btn-sm mx-1">Huonoiten arvioitu ensin</button>
+        <button name="sorting_btn" value="5" type="submit" class="btn btn-dark btn-sm mx-1">Eniten katseluja ensin</button>
+        <button name="sorting_btn" value="6" type="submit" class="btn btn-dark btn-sm mx-1">Vähiten katseluja ensin</button>
+      </div>
+    </form>
+  </div>
+
+  {% for recipe in all_recipes %}
+  <div class=" row">
+    <div class="col">
+      <div class="card m-1">
+        <div class="card-body">
+          <h5 class="card-title">{{ recipe[1] }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">Ohjeen on luonut {{ recipe[7] }} ({{
+            recipe[4].strftime("%Y-%m-%d") }})</h6>
+          {% if recipe[9] == 0 %}
+          <h6 class="card-subtitle mb-2 text-muted">Reseptillä ei ole vielä arvioita. Katsottu {{ recipe[10] }} kertaa.
+          </h6>
+          {% else %}
+          <h6 class="card-subtitle mb-2 text-muted">Arvioiden keskiarvo {{ recipe[9]|round(1) }}. Katsottu {{ recipe[10]
+            }} kertaa.</h6>
+          {% endif %}
+          <p class="card-text">{{ recipe[8] }}</p>
+          <a href="{{ recipe[6] }}" class="btn btn-outline-dark">Katso resepti</a>
         </div>
+      </div>
     </div>
-    {% endfor %}
+  </div>
+  {% endfor %}
 </div>
 
 

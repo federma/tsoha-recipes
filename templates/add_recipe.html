@@ -1,47 +1,72 @@
+{% set active_page = "new_recipe" %}
+
 {% extends "base_template.html" %}
 
 {% block title %}Uusi resepti{% endblock %}
 
 {% block main %}
 
+{% if session.user_id %}
+
 <div class="container">
-    <div class="row">
-        <form action="/new_recipe" method="POST">
+  <div class="row">
+    <form class="needs-validation" action="/new_recipe" method="POST">
 
-            <div class="form-group">
-                <label for="recipe_name">Reseptin nimi</label>
-                <input type="text" class="form-control" name="recipe_name">
-            </div>
+      <div class="form-group">
+        <label for="recipe_name">Reseptin nimi</label>
+        <input type="text" class="form-control" name="recipe_name" required>
+      </div>
 
-            <div class="form-group">
-                <label for="portions">Annosten määrä</label>
-                <select name="portions" class="form-control" id="portions" style="width:auto">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select>
-            </div>
+      <div class="form-group">
+        <label for="portions">Annosten määrä</label>
+        <select name="portions" class="form-control" id="portions" style="width:auto" required>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
 
-            <div id="newElementId">Ilmoita reseptin ainesosat ja määrät:</div>
 
-            <div id="dynamicCheck">
-                <input type="button" value="Lisää ainesosia" onclick="createNewElement();" />
-            </div>
+      <div id="newElementId">Ilmoita reseptin ainesosat ja määrät.
+        <button type="button" class="btn btn-outline-success" value="Lisää ainesosia"
+          onclick="createNewElement();">Lisää rivi</button>
+        <button type="button" class="btn btn-outline-danger" value="Poista viimeinen rivi"
+          onclick="deleteLastElement();">Poista rivi</button>
+      </div>
 
-            <div class="form-group">
-                <label for="instructions">Valmistusohje</label>
-                <textarea name="instructions" class="form-control" rows="5"></textarea>
-                <button type="submit" class="btn btn-primary">Lisää resepti</button>
-            </div>
+      <div class="form-group">
+        <label for="description">Kuvaile ruoka-annosta lyhyesti</label>
+        <textarea name="description" class="form-control" rows="3"
+          placeholder="Mihin tilanteisiin ruoka sopii? Arkeen, juhlaan vai mökkireissuille? Tulinen vai mieto?"
+          required></textarea>
+      </div>
 
-        </form>
+      <div class="form-group">
+        <label for="instructions">Valmistusohje</label>
+        <textarea name="instructions" class="form-control" rows="5" required></textarea>
+        <button type="submit" class="btn btn-primary">Lisää resepti</button>
+      </div>
 
-    </div>
+    </form>
+
+  </div>
 </div>
 
+{% else %}
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <p>Vain kirjautuneet käyttäjät voivat lisätä reseptejä.</p>
+    </div>
+  </div>
+</div>
+
+{% endif %}
 
 <script type="text/JavaScript">
+
     function createNewElement() {
         // First create a DIV element.
         var txtNewInputBox = document.createElement('div');
@@ -52,6 +77,18 @@
     
         // Finally put it where it is supposed to appear.
         document.getElementById("newElementId").appendChild(txtNewInputBox);
+    }
+
+    function deleteLastElement() {
+        // Get the correct DIV element.
+        var toDelete = document.getElementById("newElementId")
+
+        // Check if any rows have been added
+        if (toDelete.childNodes.length > 1) {     
+
+            // Remove last child
+            toDelete.removeChild(toDelete.lastChild)
+        }
     }
 
 </script>
