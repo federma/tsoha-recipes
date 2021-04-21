@@ -7,3 +7,6 @@ __pycache__/
 
 # scripts for starting development environment etc
 start_ssh_env_postgresql.sh
+
+# notes
+todo.txt
