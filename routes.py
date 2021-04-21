@@ -130,4 +130,28 @@ def sort_recipes():
     list_of_recipes = recipes.sort_recipes(sorting_method)
     return render_template("show_recipes.html", all_recipes=list_of_recipes)
 
+@app.route("/recipe/edit/<int:recipe_id>", methods=["GET", "POST"])
+def edit_recipe(recipe_id):
+
+    if request.method == "GET":
+        recipe_details = recipes.get_details_by_id(recipe_id)
+        ingredients = recipes.get_ingredients_by_id(recipe_id)
+        return render_template("edit_recipe.html", details=recipe_details, ingredients=ingredients)
+
+    if request.method == "POST":
+        form = request.form
+        recipe_name = form["recipe_name"]
+        portions = int(form["portions"])
+        description = form["description"]
+        instructions = form["instructions"]
+        items = zip(form.getlist("ingredient"), map(
+            int, form.getlist("amount")), form.getlist("unit"))
+
+        print(recipe_id, recipe_name, portions, description, instructions, items)
+        print(type(recipe_id))
+
+        if recipes.modify(recipe_id, recipe_name, description, portions, instructions, items):
+            return redirect("/recipes")
+        else:
+            return render_template("error.html", message="Reseptin muokkaaminen epäonnistui")
 

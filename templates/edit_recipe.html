@@ -1,29 +1,29 @@
-{% set active_page = "new_recipe" %}
-
 {% extends "base_template.html" %}
 
-{% block title %}Uusi resepti{% endblock %}
+{% block title %}Muokkaa reseptiä{% endblock %}
 
 {% block main %}
 
-{% if session.user_id %}
+{% if session.user_id == details[5] %}
 
 <div class="container">
   <div class="row">
-    <form class="needs-validation" action="/new_recipe" method="POST">
+    <h5>Voit muokata reseptin tietoja</h3>
+    <form class="needs-validation" action="{{ request.path }}" method="POST">
 
       <div class="form-group">
         <label for="recipe_name">Reseptin nimi</label>
-        <input type="text" class="form-control" name="recipe_name" placeholder="Anna reseptille kuvaava nimi" required>
+        <input type="text" class="form-control" name="recipe_name" placeholder="Anna reseptille kuvaava nimi"
+          value="{{ details[1] }}" required>
       </div>
 
       <div class="form-group">
         <label for="portions">Annosten määrä</label>
         <select name="portions" class="form-control" id="portions" style="width:auto" required>
-          <option value="1">1</option>
-          <option value="2" selected>2</option>
-          <option value="3">3</option>
-          <option value="4">4</option>
+          <option value="1" {% if details[3]==1 %} selected {% endif %}>1</option>
+          <option value="2" {% if details[3]==2 %} selected {% endif %}>2</option>
+          <option value="3" {% if details[3]==3 %} selected {% endif %}>3</option>
+          <option value="4" {% if details[3]==4 %} selected {% endif %}>4</option>
         </select>
       </div>
 
@@ -34,20 +34,45 @@
           onclick="createNewElement();">Lisää rivi</button>
         <button type="button" class="btn btn-outline-danger btn-sm" value="Poista viimeinen rivi"
           onclick="deleteLastElement();">Poista rivi</button>
+
+        {% for item in ingredients %}
+        <div>
+          <div class="row">
+            <div class="col">
+              <input type='text' class='form-control' placeholder='Ainesosa' name='ingredient' id='newInputBox'
+                value="{{ item[1] }}" required>
+            </div>
+            <div class="col-4">
+              <input type='text' class='form-control' placeholder='Määrä' name='amount' value="{{ item[2] }}" required>
+            </div>
+            <div class="col-2">
+              <select class='form-select' name='unit' required>
+                <option value='mm' {% if item[3]=='mm' %} selected {% endif %}>maun mukaan</option>
+                <option value='kpl' {% if item[3]=='kpl' %} selected {% endif %}>kappaletta</option>
+                <option value='g' {% if item[3]=='g' %} selected {% endif %}>grammaa</option>
+                <option value='kg' {% if item[3]=='kg' %} selected {% endif %}>kilogrammaa</option>
+                <option value='ml' {% if item[3]=='ml' %} selected {% endif %}>millilitraa</option>
+                <option value='l' {% if item[3]=='l' %} selected {% endif %}>litraa</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
       </div>
+
 
       <div class="form-group">
         <label for="description">Kuvaile ruoka-annosta lyhyesti</label>
         <textarea name="description" class="form-control" rows="3"
           placeholder="Minkä alueen ruoka on kyseessä? Kasvis- vai liharuoka? Mihin tilanteisiin ruoka sopii? Arkeen, juhlaan vai mökkireissuille? Tulinen vai mieto?"
-          required></textarea>
+          required>{{ details[6] }}</textarea>
       </div>
 
       <div class="form-group">
         <label for="instructions">Valmistusohje</label>
         <textarea name="instructions" class="form-control" rows="5"
-          placeholder="Anna vaiheittain ruuan valmistusohjeet." required></textarea>
-        <button type="submit" class="btn btn-primary">Lisää resepti</button>
+          placeholder="Anna vaiheittain ruuan valmistusohjeet." required>{{ details[2] }}</textarea>
+        <button type="submit" class="btn btn-primary">Tallenna reseptin tiedot</button>
       </div>
 
     </form>
@@ -60,7 +85,7 @@
 <div class="container">
   <div class="row">
     <div class="col">
-      <p>Vain kirjautuneet käyttäjät voivat lisätä reseptejä.</p>
+      <p>Pääsy kielletty. Voit muokata vain itse lisäämiäsi reseptejä.</p>
     </div>
   </div>
 </div>

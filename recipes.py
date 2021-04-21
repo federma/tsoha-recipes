@@ -7,8 +7,8 @@ def enter(recipe_name, description, portions, instructions, items):
     user_id = users.user_id()
 
     try:
-        sql = "INSERT INTO recipes (name, description, instructions, portions, created_at, user_id) VALUES \
-            (:name, :description, :instructions, :portions, NOW(), :user_id)"
+        sql = "INSERT INTO recipes (name, description, instructions, portions, created_at, user_id, visible) VALUES \
+            (:name, :description, :instructions, :portions, NOW(), :user_id, 1)"
         db.session.execute(sql, {"name": recipe_name, "description": description,
                            "instructions": instructions, "portions": portions, "user_id": user_id})
         db.session.commit()
@@ -46,15 +46,13 @@ def list_recipes():
     """Returns all details in the recipes table and also adds url fields and recipes creators name"""
     #sql = "SELECT R.*, CONCAT('/recipe/', R.id), U.username FROM recipes R, users U WHERE R.user_id=U.id"
     sql = "SELECT R.id, R.name, R.instructions, R.portions, R.created_at, R.user_id, CONCAT('/recipe/', R.id), U.username, R.description, \
-        (SELECT COALESCE(AVG(rating), 0) FROM ratings WHERE recipe_id=R.id) AS stars, R.views \
+        (SELECT COALESCE(AVG(rating), 0) FROM ratings WHERE recipe_id=R.id) AS stars, R.views, U.id \
         FROM recipes R, users U WHERE R.user_id=U.id"
 
     result = db.session.execute(sql)
     return result.fetchall()
 
 # this is not used anywhere atm -> possibly remove later
-
-
 def list_ids_and_names():
     ids = []
     names = []
@@ -80,7 +78,7 @@ def get_ingredients_by_id(recipe_id):
 
 
 def made_by_user(user_id):
-    sql = "SELECT R.id, R.name, R.instructions, R.portions, R.created_at, R.user_id, CONCAT('/recipe/', id), R.description FROM recipes R WHERE R.user_id=:user_id"
+    sql = "SELECT R.id, R.name, R.instructions, R.portions, R.created_at, R.user_id, CONCAT('/recipe/', R.id), R.description FROM recipes R WHERE R.user_id=:user_id"
     result = db.session.execute(sql, {"user_id": user_id})
     return result.fetchall()
 
@@ -143,3 +141,32 @@ def sort_recipes(method):
     sql = sql + options[method]
     result = db.session.execute(sql)
     return result.fetchall()
+
+
+def modify(recipe_id, recipe_name, description, portions, instructions, items):
+    
+    try:
+        sql = "UPDATE recipes SET name=:name, description=:description, instructions=:instructions, portions=:portions, created_at=NOW() \
+            WHERE id=:recipe_id"
+        db.session.execute(sql, {"name": recipe_name, "description": description,
+                            "instructions": instructions, "portions": portions, "recipe_id": recipe_id})
+        db.session.commit()
+    except:
+        return False
+
+    try:
+        # first delete old records
+        sql = "DELETE FROM ingredients WHERE recipe_id=:recipe_id"
+        db.session.execute(sql, {"recipe_id": recipe_id})
+        db.session.commit()
+        # then insert the modified versions
+        for item in items:
+            # unpack values
+            ingredient, amount, unit = item
+            sql = "INSERT INTO ingredients (name, amount, unit, recipe_id) VALUES (:ingredient, :amount, :unit, :recipe_id)"
+            db.session.execute(sql, {
+                               "ingredient": ingredient, "amount": amount, "unit": unit, "recipe_id": recipe_id})
+            db.session.commit()
+    except:
+        return False
+    return True

@@ -47,6 +47,9 @@
           {% endif %}
           <p class="card-text">{{ recipe[8] }}</p>
           <a href="{{ recipe[6] }}" class="btn btn-outline-dark">Katso resepti</a>
+          {% if session.user_id == recipe[11] %}
+          <a href="/recipe/edit/{{ recipe[0] }}" class="btn btn-outline-dark">Muokkaa reseptiä</a>
+          {% endif %}
         </div>
       </div>
     </div>
