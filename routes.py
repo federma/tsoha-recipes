@@ -4,6 +4,7 @@ from flask import render_template, request, redirect
 import users
 import recipes
 import comments
+import shopping_list
 
 
 @app.route("/")
@@ -84,7 +85,9 @@ def recipe(recipe_id):
     ingredients = recipes.get_ingredients_by_id(recipe_id)
     #print(ingredients)
     comment_list = comments.get_comments(recipe_id)
-    return render_template("recipe.html", details=recipe_details, ingredients=ingredients, comment_list=comment_list)
+    in_cart = shopping_list.is_in_list(1, users.user_id(), recipe_id)
+
+    return render_template("recipe.html", details=recipe_details, ingredients=ingredients, comment_list=comment_list, in_cart=in_cart)
 
 @app.route("/profile", methods=["GET", "POST"])
 def profile():
@@ -155,3 +158,47 @@ def edit_recipe(recipe_id):
         else:
             return render_template("error.html", message="Reseptin muokkaaminen epäonnistui")
 
+
+@app.route("/shopping-list", methods=["GET", "POST"])
+def shopping_cart():
+
+    if request.method == "GET":
+        # default to two portions
+        items = shopping_list.generate_list(1, users.user_id(), 2)
+        print("listalla ovat ", items)
+        return render_template("shopping_list.html", items=items, portions=2)
+    
+    if request.method == "POST":
+
+        portions = request.form["old_value"]
+
+        try:
+            portions = request.form["portions_number"]
+            items = shopping_list.generate_list(1, users.user_id(), portions)
+            return render_template("shopping_list.html", items=items, portions=portions)
+
+        except:
+            pass
+        
+        action = request.form["modify_shopping_cart"]
+
+        if action == "delete_all":
+            shopping_list.clear_cart(1, users.user_id())
+            return render_template("shopping_list.html", items=None, portions=portions)
+
+
+
+@app.route("/shopping-list/edit", methods=["POST"])
+def edit_shopping_list():
+    recipe_id = request.form["recipe_id"]
+    u_id = users.user_id()
+
+    insert_or_remove = request.form["modify_shopping_cart"]
+
+    if insert_or_remove == "insert":
+        shopping_list.add_recipe(1, u_id, recipe_id)
+    else:
+        shopping_list.remove_recipe(1, u_id, recipe_id)
+
+    return redirect("/recipe/" + recipe_id)
+                

@@ -1,0 +1,62 @@
+{% extends "base_template.html" %}
+
+{% set active_page = "shopping_cart" %}
+
+{% block title %}Ostoslista{% endblock %}
+
+{% block main %}
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+
+      {% if items is none %}
+
+      <h4>Et ole valinnut reseptejä ostoslistaasi. Voit lisätä reseptejä ostoslistaan reseptin omalta sivulta.</h4>
+
+      {% else %}
+
+      <h4>Ostoslistallasi on seuraavat reseptit</h4>
+      <p>Annoksia per resepti valittu {{ portions }}</p>
+      <form action="/shopping-list" method="POST">
+        <input type="hidden" name="old_value" value={{ portions }}>
+        <select name="portions_number">
+          <option value="1" {% if portions == "1" %}selected{% endif %}>1</option>
+          <option value="2" {% if portions == "2" %}selected{% endif %}>2</option>
+          <option value="3" {% if portions == "3" %}selected{% endif %}>3</option>
+          <option value="4" {% if portions == "4" %}selected{% endif %}>4</option>
+          <option value="5" {% if portions == "5" %}selected{% endif %}>5</option>
+          <option value="6" {% if portions == "6" %}selected{% endif %}>6</option>
+        </select>
+        <button name="change_portions" type="submit" class="btn btn-light btn-sm mx-1">Vaihda annosten määrä</button>
+      </form>
+
+      {% for name, ingredients in items.items() %}
+
+      <h5>{{ name }}</h5>
+      <ul>
+
+        {% for item in ingredients %}
+
+        <li>{{ item[1] }} {{ item[2]|round(1) }} {{ item[3] }}</li>
+
+        {% endfor %}
+
+      </ul>
+      <hr>
+
+      {% endfor %}
+
+      <form action="/shopping-list" method="POST">
+        <input type="hidden" name="old_value" value={{ portions }}>
+        <button name="modify_shopping_cart" type="submit" class="btn btn-danger btn-sm mx-1" value="delete_all">Poista kaikki
+          reseptit listalta</button>
+      </form>
+
+      {% endif %}
+      
+    </div>
+  </div>
+</div>
+
+{% endblock %}

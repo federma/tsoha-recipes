@@ -41,3 +41,13 @@ CREATE TABLE ratings (
     recipe_id INTEGER REFERENCES recipes,
     created_at TIMESTAMP
 );
+
+CREATE TABLE shopping_list (
+    id SERIAL PRIMARY KEY,
+    -- cart_id is reserved for future use, could be used for saving multiple shopping-lists for later use
+    -- or also saving favourites (f.e. items with cart_id 1 could be favourites). Not yet implemented in the code.
+    cart_id INTEGER,
+    user_id INTEGER REFERENCES users,
+    recipe_id INTEGER REFERENCES recipes,
+    inserted_at TIMESTAMP
+)

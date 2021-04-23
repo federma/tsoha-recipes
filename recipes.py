@@ -7,8 +7,8 @@ def enter(recipe_name, description, portions, instructions, items):
     user_id = users.user_id()
 
     try:
-        sql = "INSERT INTO recipes (name, description, instructions, portions, created_at, user_id, visible) VALUES \
-            (:name, :description, :instructions, :portions, NOW(), :user_id, 1)"
+        sql = "INSERT INTO recipes (name, description, instructions, portions, created_at, user_id, visible, views) VALUES \
+            (:name, :description, :instructions, :portions, NOW(), :user_id, 1, 0)"
         db.session.execute(sql, {"name": recipe_name, "description": description,
                            "instructions": instructions, "portions": portions, "user_id": user_id})
         db.session.commit()
@@ -170,3 +170,14 @@ def modify(recipe_id, recipe_name, description, portions, instructions, items):
     except:
         return False
     return True
+
+def get_ingredients_by_id_and_portions(recipe_id, portions):
+    # first get number of standard portions for this recipe
+    sql = "SELECT portions FROM recipes WHERE id=:id"
+    original_portions = db.session.execute(sql, {"id": recipe_id})
+    original_portions = original_portions.fetchone()[0]
+    print("ap annoksia ja tyyppi ", original_portions, type(original_portions))
+
+    sql = "SELECT id, name, 1.0 * :por * amount / :opor, unit, recipe_id FROM ingredients WHERE recipe_id=:recipe_id"
+    result = db.session.execute(sql, {"por": portions, "opor": original_portions, "recipe_id": recipe_id})
+    return result.fetchall()
