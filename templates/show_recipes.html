@@ -7,25 +7,52 @@
 {% block main %}
 
 <div class="container">
+
   <div class="row">
-    <form action="/find_recipe" method="POST">
+    <div class="col">
+      {% if query == "" %}
+      <p>Näytetään kaikki reseptit ({{ count }} kpl)</p>
+      {% else %}
+      <p>Näytetään tulokset haulla {{ query }} ({{ count }} kpl)</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="row">
+    <form action="/recipes" method="POST">
       <div class="input-group m-1">
+        <input type="hidden" name="route" value="find_recipes">
+        <input type="hidden" name="sorting_method" value={{ sorting_method }}>
         <input type="text" class="form-control" name="find_recipe"
           placeholder="Hae reseptiä nimellä. Tyhjä haku listaa kaikki reseptit.">
-        <button type="submit" class="btn btn-light btn-sm">Hae</button>
+        <button type="submit" class="btn btn-dark btn-sm">HAE</button>
       </div>
     </form>
   </div>
 
   <div class="row">
-    <form action="/sort_recipes" method="POST">
+    <form action="/recipes" method="POST">
       <div class="input-group m-1">
-        <button name="sorting_btn" value="1" type="submit" class="btn btn-dark btn-sm mx-1">Uusin ensin</button>
-        <button name="sorting_btn" value="2" type="submit" class="btn btn-dark btn-sm mx-1">Vanhin ensin</button>
-        <button name="sorting_btn" value="3" type="submit" class="btn btn-dark btn-sm mx-1">Parhaiten arvioitu ensin</button>
-        <button name="sorting_btn" value="4" type="submit" class="btn btn-dark btn-sm mx-1">Huonoiten arvioitu ensin</button>
-        <button name="sorting_btn" value="5" type="submit" class="btn btn-dark btn-sm mx-1">Eniten katseluja ensin</button>
-        <button name="sorting_btn" value="6" type="submit" class="btn btn-dark btn-sm mx-1">Vähiten katseluja ensin</button>
+        <input type="hidden" name="route" value="sort_recipes">
+        <input type="hidden" name="query" value={{ query }}>
+        <button name="sorting_btn" value="1" type="submit" class="btn btn-outline-{% if sorting_method == "1" %}primary{% else %}secondary{% endif %} btn-sm mx-1">
+          UUSIN ENSIN
+        </button>
+        <button name="sorting_btn" value="2" type="submit" class="btn btn-outline-{% if sorting_method == "2" %}primary{% else %}secondary{% endif %} btn-sm mx-1">
+          VANHIN ENSIN
+        </button>
+        <button name="sorting_btn" value="3" type="submit" class="btn btn-outline-{% if sorting_method == "3" %}primary{% else %}secondary{% endif %} btn-sm mx-1">
+          PARHAITEN ARVIOITU ENSIN
+        </button>
+        <button name="sorting_btn" value="4" type="submit" class="btn btn-outline-{% if sorting_method == "4" %}primary{% else %}secondary{% endif %} btn-sm mx-1">
+          HUONOITEN ARVIOITU ENSIN
+        </button>
+        <button name="sorting_btn" value="5" type="submit" class="btn btn-outline-{% if sorting_method == "5" %}primary{% else %}secondary{% endif %} btn-sm mx-1">
+          ENITEN KATSELUITA ENSIN
+        </button>
+        <button name="sorting_btn" value="6" type="submit" class="btn btn-outline-{% if sorting_method == "6" %}primary{% else %}secondary{% endif %} btn-sm mx-1">
+          VÄHITEN KATSELUITA ENSIN
+        </button>
       </div>
     </form>
   </div>
@@ -56,7 +83,7 @@
     </div>
   </div>
   {% endfor %}
-</div>
 
+</div>
 
 {% endblock %}

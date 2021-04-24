@@ -52,17 +52,47 @@ def list_recipes():
     result = db.session.execute(sql)
     return result.fetchall()
 
+def search_sort_recipes(query, sorting_method):
+    """Returns recipe details. Search from names by query string (empty query returns all), sort by time, grading or views."""
+    # new method, replaces list_recipes
+
+    sql = "SELECT R.id, R.name, R.instructions, R.portions, R.created_at, R.user_id, CONCAT('/recipe/', R.id), U.username, R.description, \
+        (SELECT COALESCE(AVG(rating), 0) FROM ratings WHERE recipe_id=R.id) AS stars, R.views, U.id \
+        FROM recipes R, users U WHERE R.user_id=U.id"
+
+    # sorting options, append to sql-statement
+    options = {"1": " ORDER BY R.created_at DESC, R.name ASC",
+            "2": " ORDER BY R.created_at ASC, R.name ASC",
+            "3": " ORDER BY stars DESC, R.name ASC",
+            "4": " ORDER BY stars ASC, R.name ASC",
+            "5": " ORDER BY R.views DESC, R.name ASC",
+            "6": " ORDER BY R.views ASC, R.name ASC"}    
+
+    if query != "":
+        # insert search query to end of sql-statement
+        sql = sql + " AND R.name ILIKE :query" + options[sorting_method]
+        query = "%" + query + "%"
+        result = db.session.execute(sql, {"query": query})
+    else:
+        # query is empty
+        sql = sql + options[sorting_method]
+        result = db.session.execute(sql)
+    
+    result = db.session.execute(sql, {"query": query})
+    return result.fetchall()
+    
+
 # this is not used anywhere atm -> possibly remove later
-def list_ids_and_names():
-    ids = []
-    names = []
-    sql = "SELECT id, name FROM recipes"
-    result = db.session.execute(sql)
-    id_name_all = result.fetchall()
-    for id, name in id_name_all:
-        ids.append(id)
-        names.append(name)
-    return ids, names
+# def list_ids_and_names():
+#     ids = []
+#     names = []
+#     sql = "SELECT id, name FROM recipes"
+#     result = db.session.execute(sql)
+#     id_name_all = result.fetchall()
+#     for id, name in id_name_all:
+#         ids.append(id)
+#         names.append(name)
+#     return ids, names
 
 
 def get_details_by_id(recipe_id):
@@ -101,7 +131,9 @@ def find_recipes(search_string):
         return list_recipes()
 
     search_string = "%" + search_string + "%"
-    sql = "SELECT R.id, R.name, R.instructions, R.portions, R.created_at, R.user_id, CONCAT('/recipe/', R.id), U.username, R.description FROM recipes R, users U WHERE R.user_id=U.id AND R.name ILIKE :search_string"
+    sql = "SELECT R.id, R.name, R.instructions, R.portions, R.created_at, R.user_id, CONCAT('/recipe/', R.id), U.username, R.description, \
+        (SELECT COALESCE(AVG(rating), 0) FROM ratings WHERE recipe_id=R.id) AS stars, R.views, U.id \
+        FROM recipes R, users U WHERE R.user_id=U.id AND R.name ILIKE :search_string"
     result = db.session.execute(sql, {"search_string": search_string})
     return result.fetchall()
 

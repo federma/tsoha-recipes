@@ -7,20 +7,24 @@
 {% block main %}
 
 <div class="container">
-    <div class="row">
-        
-        {% if session.user_id %}
-        <p>Hei {{ username }}! Olet kirjautunut sisään sovellukseen.</p>
-        <p>Voit halutessasi kirjautua ulos painamalla <a href="/logout">tästä.</a></p>
-        <p>Luomasi reseptit ovat alla, voit tarkastella niitä klikkaamalla reseptiä.</p>
+  <div class="row">
+    <div class="col">
 
-        {% for recipe in users_recipes %}
+      {% if session.user_id %}
+      <p>Hei {{ username }}!</p>
 
-        <div class="list-group">
-            <a href="{{ recipe[6] }}" class="list-group-item list-group-item-action">{{ recipe[1] }}</a>
-        </div>
+      <p>Halutessasi voit kirjautua ulos</p>
+      <a href="/logout" class="btn btn-outline-warning" role="button">Kirjaudu ulos</a>
 
-        <!-- 
+      <p>Luomasi reseptit ovat alla, voit tarkastella niitä klikkaamalla reseptiä.</p>
+
+      {% for recipe in users_recipes %}
+
+      <div class="list-group">
+        <a href="{{ recipe[6] }}" class="list-group-item list-group-item-action my-1">{{ recipe[1] }}</a>
+      </div>
+
+      <!-- 
             might change the appereance to a card later, this "stretched-link" makes the whole card clickable   
             <div class="card">
                 <div class="card-body">
@@ -31,20 +35,28 @@
             </div>
         -->
 
-        {% endfor %}
+      {% endfor %}
 
-        {% else %}
-        <p>
-            Et ole kirjautunut sisään. Voit <a href="/register">luoda tunnuksen</a> tai kirjautua sovellukseen aiemmin luomallasi
-            tunnuksella.
-            Voit myös siirtyä tarkastelemaan reseptejä ilman kirjautumista, mutta uusien reseptien luominen sekä
-            kommentointi vaatii kirjautumisen.
-        </p>
-        {% include "login.html" %}
+      {% else %}
 
-        {% endif %}
+      <p>
+        Et ole kirjautunut sisään. Voit luoda tunnuksen tai kirjautua sovellukseen
+        aiemmin luomallasi
+        tunnuksella.
+        Voit myös siirtyä tarkastelemaan reseptejä ilman kirjautumista, mutta uusien reseptien luominen sekä
+        kommentointi vaatii kirjautumisen.
+      </p>
+
+      <a href="/register" class="btn btn-outline-secondary my-1" role="button">Luo uusi tunnus</a>
+
+      <p>Jos sinulla on jo käyttäjätunnus, niin voit kirjautua sisään.</p>
+
+      {% include "login.html" %}
+
+      {% endif %}
 
     </div>
+  </div>
 </div>
 
 

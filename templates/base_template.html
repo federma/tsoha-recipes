@@ -39,17 +39,29 @@
             {% endif %}
           </li>
           <li class="nav-item">
-            {% if active_page == "profile" %}
-            <a class="nav-link active" aria-current="page" href="/profile">KÄYTTÄJÄ</a>
-            {% else %}
-            <a class="nav-link" href="/profile">KÄYTTÄJÄ</a>
-            {% endif %}
-          </li>
-          <li class="nav-item">
             {% if active_page == "shopping_cart" %}
             <a class="nav-link active" aria-current="page" href="/shopping-list">OSTOSLISTA</a>
             {% else %}
             <a class="nav-link" href="/shopping-list">OSTOSLISTA</a>
+            {% endif %}
+          </li>
+          <li class="nav-item">
+            {% if active_page == "profile" %}
+
+              {% if session.user_id %}
+              <a class="nav-link active" aria-current="page" href="/profile">{{ session.user_name }}</a>
+              {% else %}
+              <a class="nav-link active" aria-current="page" href="/profile">KIRJAUDU TAI LUO TUNNUS</a>
+              {% endif %}
+
+            {% else %}
+
+              {% if session.user_id %}
+              <a class="nav-link" aria-current="page" href="/profile">{{ session.user_name }}</a>
+              {% else %}
+              <a class="nav-link" aria-current="page" href="/profile">KIRJAUDU TAI LUO TUNNUS</a>
+              {% endif %}
+
             {% endif %}
           </li>
         </ul>
