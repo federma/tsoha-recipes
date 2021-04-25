@@ -1,27 +1,33 @@
 # Reseptisovellus
 Aineopintojen harjoitustyö: Tietokantasovellus, Tietojenkäsittelytieteen osasto, Helsingin yliopisto, kevät 2021.
 
-Sovelluksen tilanne 11.4.2021
+Sovelluksen tilanne 25.4.2021 (välipalautus III)
 
 Testiversio löytyy osoitteesta [https://morning-beach-58885.herokuapp.com/](https://morning-beach-58885.herokuapp.com/)
 
-## Toiminnallisuudet tällä hetkellä
-
-* Käyttäjä -valikon kautta voi luoda tunnuksen sovellukseen, kirjautua sisään tai ulos ja tarkistaa itse luomansa reseptit
-* sovellukseen voi jättää uuden reseptin
-* Reseptit -valikon alta voi selailla sovellukseen luotuja reseptejä
-* reseptin voi em. valikosta klikata tarkempaan tarkasteluun, jolloin näkyy reseptiin kuuluvat ainesosat ja niiden tiedot
-* reseptiin voi myös lisätä kommentteja ja lukea muiden jättämiä kommentteja
-
 Tietojen tallentamiseen käytetään PostgreSQL -tietokantaa.
 
-## Selkeimmät puutteet ja lopulliseen versioon tulossa olevat ominaisuudet
+## Toiminnallisuudet tällä hetkellä
 
-* uuden reseptin syöttämisessä ei ole mitään validaatioita (eikä oikeastaan missään muussakaan lomakkeessa) -> esim. jonkin ainesosa-kentän jättäminen tyhjäksi tai jonkin muun kuin kokonaisluvun kirjaaminen määrä-kohtaan johtaa virhetilanteeseen
-* uuden reseptin ainesosakenttiä pitäisi pystyä myös poistamaan (tällä hetkellä vain lisäysnappi)
-* käyttäjä voi ilman kirjautumista yrittää jättää kommenttia tai lisätä uuden reseptin -> virhetilanne
-* ulkoasu on kaikin puolin vielä kesken (html, css, javascript eivät juuri entuudestaan ole tuttua, niin asiassa riittää opeteltavaa)
-* lisäominaisuuksiksia olisi tarkoitus tulla ainakin jotain näistä: ostoslistan luonti, mahdollisuus muokata itse luomiaan reseptejä, suosikkireseptien tallentaminen, reseptiarviot, käyttäjäryhmien luonti (yksityiset reseptipankit ja kommentoinnit)
+* käyttäjä voi luoda tunnuksen, kirjautua sisään tai ulos
+* käyttäjä näkee profiilisivultaan itse luomansa reseptit
+* sovellukseen voi jättää uuden reseptin
+* jättämäänsä reseptiä voi muokata
+* sovellukseen jätettyjä reseptejä voi selailla, hakea nimen perusteella ja järjestellä
+* reseptin ohjetta voi tarkistella
+* reseptiin voi lisätä kommentteja ja lukea muiden jättämiä kommentteja
+* reseptin voi lisätä ostoslistalle tai poistaa sieltä
+* ostoslistalla voi valita annosten lukumäärän ja ainesosat skaalautuvat
+* ostoslistan voi tyhjentää kokonaan
+
+## Kehityksessä olevat keskeneräiset asiat
+
+* ulkoasuun on takoitus panostaa kurssin loppuvaiheessa lisää
+* lomakkeiden syötteiden validaatiot ovat kesken, esim. syötteiden pituutta ei vielä tarkisteta
+* CSRF-haavoittuvuuden paikkaaminen
+* reseptin ainesosien syötteessä täytyy paremmin huomioida, jos tarkkaa määrää ei voi antaa (nyt voi valita yksiköksi "maun mukaan", mutta täytyy silti antaa jokin määrä)
+* ostoslista täytyy muuttaa selkeämmäksi tulosteiden osalta ja jotenkin huomioida erikseen ainesosat, joille ei ole määriä (joita siten ei voi skaalata eri annoskokoihin)
+* jos jää aikaa tai on kurssin jälkeen intoa kehittää, niin voisi lisäillä suosikkireseptien ja usean ostoslistan tallenusmahdollisuuden, käyttäjäryhmät (yksityiset reseptipankit ja kommentoinnit), admin-näkymän, valmistusajat resepteille
 
 ### Alkuperäinen info/kehitysajatus alla
 
