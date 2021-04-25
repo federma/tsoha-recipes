@@ -28,6 +28,8 @@ Tietojen tallentamiseen käytetään PostgreSQL -tietokantaa.
 * reseptin ainesosien syötteessä täytyy paremmin huomioida, jos tarkkaa määrää ei voi antaa (nyt voi valita yksiköksi "maun mukaan", mutta täytyy silti antaa jokin määrä)
 * ostoslista täytyy muuttaa selkeämmäksi tulosteiden osalta ja jotenkin huomioida erikseen ainesosat, joille ei ole määriä (joita siten ei voi skaalata eri annoskokoihin)
 * koodia on tarkoitus siivota (esim. poistaa käyttämättömät metodit)
+* mahdollisuus lisätä/poistaa reseptiä ostoslistalta suoraan reseptien selailusivulle ja ostoslista-sivulle
+* timestamp täytyy korjata, ei näytä olevan Suomen aikavyöhyke asetettu
 * jos jää aikaa tai on kurssin jälkeen intoa kehittää, niin voisi lisäillä suosikkireseptien ja usean ostoslistan tallenusmahdollisuuden, käyttäjäryhmät (yksityiset reseptipankit ja kommentoinnit), admin-näkymän, valmistusajat resepteille
 
 ### Alkuperäinen info/kehitysajatus alla

@@ -56,8 +56,6 @@ def generate_list(cart_id, user_id, portions):
     for id in recipe_ids:
         id = id[0]
         name = recipes.get_details_by_id(id)[1]
-        # I need to count the amount by the portions given in the method, could do it in python, but will probably make a new method in recipes and practice SQL
-        # ingredients = recipes.get_ingredients_by_id(id)
         ingredients = recipes.get_ingredients_by_id_and_portions(id, portions)
         result[name] = ingredients
 

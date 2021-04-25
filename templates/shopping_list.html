@@ -16,6 +16,12 @@
 
       {% else %}
 
+      {% if items|length == 0 %}
+
+      <h4>Et ole valinnut reseptejä ostoslistaasi. Voit lisätä reseptejä ostoslistaan reseptin omalta sivulta.</h4>
+
+      {% else %}
+
       <h4>Ostoslistallasi on seuraavat reseptit</h4>
       <p>Annoksia per resepti valittu {{ portions }}</p>
       <form action="/shopping-list" method="POST">
@@ -52,6 +58,8 @@
         <button name="modify_shopping_cart" type="submit" class="btn btn-danger btn-sm mx-1" value="delete_all">Poista kaikki
           reseptit listalta</button>
       </form>
+
+      {% endif %}
 
       {% endif %}
       
