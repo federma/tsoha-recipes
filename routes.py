@@ -1,6 +1,6 @@
 from werkzeug.security import check_password_hash
 from app import app
-from flask import render_template, request, redirect
+from flask import render_template, request, redirect, session
 import users
 import recipes
 import comments
@@ -10,6 +10,12 @@ import shopping_list
 @app.route("/")
 def index():
     # front page, not much content - just some info about the app
+
+    # bug fix, old users might have just user_id saved session
+    if users.user_id():
+        if not session.get("user_name", 0):
+            session["user_name"] = users.user_name()
+
     return render_template("index.html")
 
 
