@@ -15,7 +15,7 @@ def index():
     # front page, not much content - just some info about the app
     if users.user_id():
         # bug fix, old logged-in users might have had just user_id saved in session
-        # user_name and csrf_token were added later to the code
+        # user_name and csrf_token were added later to the code - to avoid errors, add them on the front page if necessary
         if not session.get("user_name", 0):
             session["user_name"] = users.user_name()
 
@@ -225,7 +225,7 @@ def shopping_cart():
     if request.method == "GET":
         # default to two portions
         items = shopping_list.generate_list(1, users.user_id(), 2)
-        return render_template("shopping_list.html", items=items, portions=2)
+        return render_template("shopping_list.html", items=items, portions="2")
 
     if request.method == "POST":
 

@@ -37,8 +37,9 @@
       </div>
 
 
-      <div id="newElementId">Ilmoita reseptin ainesosat ja määrät. Voit valita yksiköksi "maun mukaan", jos tarkkaa
-        määrää ei voi antaa. (teelusikka=5ml, ruokalusikka=15ml)
+      <div id="newElementId">Ilmoita reseptin ainesosat ja määrät (kokonaislukuna). Voit valita yksiköksi "maun mukaan" ja määräksi 0, jos tarkkaa
+        määrää ei voi antaa. (teelusikka=5ml, ruokalusikka=15ml) 
+        <br>
         <button type="button" class="btn btn-outline-success btn-sm" value="Lisää ainesosia"
           onclick="createNewElement();">Lisää rivi</button>
         <button type="button" class="btn btn-outline-danger btn-sm" value="Poista viimeinen rivi"
@@ -46,7 +47,7 @@
 
         {% for item in ingredients %}
         <div>
-          <div class="row">
+          <div class="row my-1">
             <div class="col">
               <input type='text' class='form-control' placeholder='Ainesosa' name='ingredient' id='newInputBox'
                 value="{{ item[1] }}" required>
@@ -56,12 +57,12 @@
             </div>
             <div class="col-2">
               <select class='form-select' name='unit' required>
-                <option value='mm' {% if item[3]=='mm' %} selected {% endif %}>maun mukaan</option>
-                <option value='kpl' {% if item[3]=='kpl' %} selected {% endif %}>kappaletta</option>
-                <option value='g' {% if item[3]=='g' %} selected {% endif %}>grammaa</option>
-                <option value='kg' {% if item[3]=='kg' %} selected {% endif %}>kilogrammaa</option>
-                <option value='ml' {% if item[3]=='ml' %} selected {% endif %}>millilitraa</option>
-                <option value='l' {% if item[3]=='l' %} selected {% endif %}>litraa</option>
+                <option value='maun mukaan' {% if item[3]=='mm' or item[3]=='maun mukaan' %} selected {% endif %}>maun mukaan</option>
+                <option value='kappaletta' {% if item[3]=='kpl' or item[3]=='kappaletta' %} selected {% endif %}>kappaletta</option>
+                <option value='grammaa' {% if item[3]=='g' or item[3]=='grammaa' %} selected {% endif %}>grammaa</option>
+                <option value='kilogrammaa' {% if item[3]=='kg' or item[3]=='kilogrammaa'%} selected {% endif %}>kilogrammaa</option>
+                <option value='millilitraa' {% if item[3]=='ml' or item[3]=='millilitraa' %} selected {% endif %}>millilitraa</option>
+                <option value='litraa' {% if item[3]=='l' or item[3]=='litraa' %} selected {% endif %}>litraa</option>
               </select>
             </div>
           </div>

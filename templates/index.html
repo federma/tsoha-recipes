@@ -8,35 +8,39 @@
 
 <div class="container">
 
-    <div class="row">
-        <div class="col">
-            <h2>Tervetuloa reseptisovellukseen!</h2>
+  <div class="row">
+    <div class="col">
+      <h3>Tervetuloa reseptisovellukseen!</h3>
 
-            <p>Tämä on kehityksessä oleva Helsingin yliopiston tietokantasovellus-kurssin harjoitustyö.
-                Sovelluksessa voit tällä hetkellä tallentaa omia reseptejäsi, muokata jättämiäsi reseptejä, tarkastella
-                muiden käyttäjien jättämiä reseptejä,
-                kommentoida sekä arvioida reseptejä. Reseptejä voi myös hakea nimellä ja järjestää muutamalla tavalla.
-            </p>
+      <p>Tämä on Helsingin yliopiston tietokantasovellus-kurssin harjoitustyö.
+        Sovellukseen voi tallentaa reseptejäsi, muokata jättämiäsi reseptejä, tarkastella
+        muiden käyttäjien jättämiä reseptejä,
+        kommentoida sekä arvioida reseptejä. Kirjautunut käyttäjä voi lisätä reseptejä ostoslistalle.
+        Reseptejä voi myös hakea nimellä ja järjestää muutamalla tavalla.
+      </p>
 
-            <p>Sovellus on vielä keskeneräinen erityisesti ulkoasun osalta. Myös osa toiminnoista on vielä bugisia ja ostoslista on yleisesti eniten vaiheessa.
-                Lähdekoodi löytyy osoitteesta <a
-                    href="https://github.com/federma/tsoha-recipes">github.com/federma/tsoha-recipes.</a>
-            </p>
+      <p>Sovellus on tarkoitus vielä kehittää kurssin jälkeen omana harjoitusprojektina. Tavoitteena on parantaa
+        erityisesti ostoslistan toiminnallisuutta ja kehittää ulkoasua.
+        Lähdekoodi ja dokumentaatio löytyy osoitteesta <a
+          href="https://github.com/federma/tsoha-recipes">github.com/federma/tsoha-recipes.</a>
+      </p>
 
-        </div>
     </div>
+  </div>
 
-    <div class="row">
-        {% if session.user_id %}
-        <p>Olet kirjautunut sisään ja voit vapaasti kokeilla sovelluksen toimintoja.</p>
-        {% else %}
-        <p>Et ole kirjautunut sisään. Voit luoda tunnuksen tai kirjautua sovellukseen aiemmin luomallasi tunnuksella
-            kirjaudu-valikosta.
-            Voit myös siirtyä tarkastelemaan reseptejä ilman kirjautumista, mutta uusien reseptien luominen sekä
-            kommentointi vaatii kirjautumisen.
-        </p>
-        {% endif %}
+  <div class="row">
+    <div class="col">
+      {% if session.user_id %}
+      <p>Olet kirjautunut sisään ja voit vapaasti kokeilla sovelluksen toimintoja.</p>
+      {% else %}
+      <p>Et ole kirjautunut sisään. Voit luoda tunnuksen tai kirjautua sovellukseen aiemmin luomallasi tunnuksella
+        kirjaudu-valikosta.
+        Voit myös siirtyä tarkastelemaan reseptejä ilman kirjautumista, mutta esimerkiksi uusien reseptien luominen sekä
+        kommentointi vaatii kirjautumisen.
+      </p>
+      {% endif %}
     </div>
+  </div>
 
 </div>
 

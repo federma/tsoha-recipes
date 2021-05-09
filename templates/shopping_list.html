@@ -22,8 +22,7 @@
 
       {% else %}
 
-      <h4>Ostoslistallasi on seuraavat reseptit</h4>
-      <p>Annoksia per resepti valittu {{ portions }}</p>
+      <p>Määrät laskettu {{ portions }}:n annokseen.</p>
       <form action="/shopping-list" method="POST">
         <input type="hidden" name="old_value" value={{ portions }}>
         <select name="portions_number">
@@ -38,6 +37,9 @@
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
       </form>
 
+      <h4 class="my-2">Ostoslistallasi on oheiset reseptit</h4>
+      <hr>
+
       {% for name, ingredients in items.items() %}
 
       <h5>{{ name }}</h5>
@@ -45,7 +47,11 @@
 
         {% for item in ingredients %}
 
-        <li>{{ item[1] }} {{ item[2]|round(1) }} {{ item[3] }}</li>
+        {% if item[2] == 0 %}
+        <li>{{ item[1] }}, {{ item[3] }} (tarkista sopiva määrä reseptistä)</li>
+        {% else %}
+        <li>{{ item[1] }}, {{ item[2]|round(1) }} {{ item[3] }}</li>
+        {% endif %}
 
         {% endfor %}
 

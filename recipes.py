@@ -18,10 +18,9 @@ def enter(recipe_name, description, portions, instructions, items):
     try:
         recipe_id = get_recipe_id(recipe_name)
 
-        # atm this can fail midway for some particular item and then recipe/ingredients would be inserted only partially - need to make all inserts in one transaction?
+        # would probably be better to make all these inserts in one transaction?
         for item in items:
             # unpack values
-            print("tulin tänne ja itemina on ", item)
             ingredient, amount, unit = item
             sql = "INSERT INTO ingredients (name, amount, unit, recipe_id) VALUES (:ingredient, :amount, :unit, :recipe_id)"
             db.session.execute(sql, {
@@ -141,7 +140,7 @@ def find_recipes(search_string):
 def count_rating(recipe_id):
     sql = "SELECT COALESCE(AVG(rating), 0) FROM ratings WHERE recipe_id=:recipe_id"
     result = db.session.execute(sql, {"recipe_id": recipe_id})
-    retult = result.fetchone()
+    result = result.fetchone()
     print(result)
     return result
 
@@ -208,8 +207,7 @@ def get_ingredients_by_id_and_portions(recipe_id, portions):
     sql = "SELECT portions FROM recipes WHERE id=:id"
     original_portions = db.session.execute(sql, {"id": recipe_id})
     original_portions = original_portions.fetchone()[0]
-    print("ap annoksia ja tyyppi ", original_portions, type(original_portions))
-
+    # scale portions
     sql = "SELECT id, name, 1.0 * :por * amount / :opor, unit, recipe_id FROM ingredients WHERE recipe_id=:recipe_id"
     result = db.session.execute(sql, {"por": portions, "opor": original_portions, "recipe_id": recipe_id})
     return result.fetchall()
