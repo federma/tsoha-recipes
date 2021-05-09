@@ -166,6 +166,8 @@ def recipe(recipe_id):
     comment_list = comments.get_comments(recipe_id)
 
     if request.method == "GET":
+        # just refreshing page adds views
+        # would be better to later limit this to count only logged in users and maybe limit max one new view per user per hour 
         recipes.add_view(recipe_id)
         return render_template("recipe.html", details=recipe_details, ingredients=ingredients, comment_list=comment_list, in_cart=in_cart, message="")
 
@@ -177,6 +179,9 @@ def recipe(recipe_id):
 
         if len(comment) > 1000:
             return render_template("recipe.html", details=recipe_details, ingredients=ingredients, comment_list=comment_list, in_cart=in_cart, message="Kommentin enimmäispituus on 1000 merkkiä.")
+
+        if len(comment) == 0:
+            return render_template("recipe.html", details=recipe_details, ingredients=ingredients, comment_list=comment_list, in_cart=in_cart, message="Et voi lisätä tyhjää kommenttia.")
 
         if not comments.add_comment(comment, recipe_id):
             return render_template("recipe.html", details=recipe_details, ingredients=ingredients, comment_list=comment_list, in_cart=in_cart, message="Kommentin lisäys epäonnistui. Tapahtui odottamaton virhe.")

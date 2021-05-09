@@ -35,7 +35,7 @@
       {% if not in_cart %}
       <form action="/shopping-list/edit" method="POST">
         <input type="hidden" name="recipe_id" value={{ details[0] }}>
-        <button name="modify_shopping_cart" type="submit" class="btn btn-light btn-sm mx-1" value="insert">Lisää
+        <button name="modify_shopping_cart" type="submit" class="btn btn-outline-dark btn-sm mx-1" value="insert">Lisää
           ostoslistaan</button>
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
       </form>
@@ -43,7 +43,7 @@
       {% else %}
       <form action="/shopping-list/edit" method="POST">
         <input type="hidden" name="recipe_id" value={{ details[0] }}>
-        <button name="modify_shopping_cart" type="submit" class="btn btn-light btn-sm mx-1" value="remove">Poista
+        <button name="modify_shopping_cart" type="submit" class="btn btn-outline-dark btn-sm mx-1" value="remove">Poista
           ostoslistasta</button>
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
       </form>
@@ -85,7 +85,7 @@
       <form action="{{ request.path }}" method="POST" onsubmit="return check(this)">
         <div class="form-group">
           <label for="comment">Voit lisätä oman kommentin reseptiin</label>
-          <textarea name="comment" class="form-control" rows="5"></textarea>
+          <textarea name="comment" class="form-control" rows="5" required></textarea>
           <button type="submit" class="btn btn-primary mt-2">Lisää kommentti</button>
         </div>
         <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">

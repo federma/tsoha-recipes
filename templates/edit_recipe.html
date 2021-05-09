@@ -82,7 +82,7 @@
         <label for="instructions">Valmistusohje</label>
         <textarea name="instructions" class="form-control" rows="5"
           placeholder="Anna vaiheittain ruuan valmistusohjeet." required>{{ details[2] }}</textarea>
-        <button type="submit" class="btn btn-primary">Tallenna reseptin tiedot</button>
+        <button type="submit" class="btn btn-primary my-1">Tallenna reseptin tiedot</button>
       </div>
 
       <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
