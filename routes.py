@@ -138,7 +138,7 @@ def recipes_show():
         return render_template("show_recipes.html", all_recipes=list_of_recipes, query=query, sorting_method=sorting_method, count=count)
 
     if request.method == "POST":
-        # check if user wants to search of sort recipes
+        # check if user wants to search or sort recipes
         choice = request.form["route"]
 
         if choice == "find_recipes":

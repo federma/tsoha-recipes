@@ -1,11 +1,13 @@
 # Reseptisovellus
 Aineopintojen harjoitustyö: Tietokantasovellus, Tietojenkäsittelytieteen osasto, Helsingin yliopisto, kevät 2021.
 
-Sovelluksen tilanne 25.4.2021 (välipalautus III)
+Sovelluksen tilanne 9.5.2021
 
-Testiversio löytyy osoitteesta [https://morning-beach-58885.herokuapp.com/](https://morning-beach-58885.herokuapp.com/)
+Testiversio löytyy osoitteesta [https://morning-beach-58885.herokuapp.com/](https://morning-beach-58885.herokuapp.com/).
 
-Tietojen tallentamiseen käytetään PostgreSQL -tietokantaa.
+Sovelluksen sujuva toiminta edellyttää, että selaimessa on JavaScript päällä. Sovellusta voi käyttää myös ilman JS:ä, mutta uusiin resepteihin ei pääse lisäämään ainesosarivejä ja lomakkeiden virheisiin reagointi on vähemmän käyttäjäystävällistä.
+
+Tietojen tallentamiseen käytetään taustalla PostgreSQL -tietokantaa.
 
 ## Toiminnallisuudet tällä hetkellä
 
@@ -20,17 +22,22 @@ Tietojen tallentamiseen käytetään PostgreSQL -tietokantaa.
 * ostoslistalla voi valita annosten lukumäärän ja ainesosat skaalautuvat
 * ostoslistan voi tyhjentää kokonaan
 
-## Kehityksessä olevat keskeneräiset asiat
+## Oikeuksien ja syötteiden hallinta
 
-* ulkoasuun on takoitus panostaa kurssin loppuvaiheessa lisää
-* lomakkeiden syötteiden validaatiot ovat kesken, esim. syötteiden pituutta ei vielä tarkisteta
-* CSRF-haavoittuvuuden paikkaaminen
-* reseptin ainesosien syötteessä täytyy paremmin huomioida, jos tarkkaa määrää ei voi antaa (nyt voi valita yksiköksi "maun mukaan", mutta täytyy silti antaa jokin määrä)
-* ostoslista täytyy muuttaa selkeämmäksi tulosteiden osalta ja jotenkin huomioida erikseen ainesosat, joille ei ole määriä (joita siten ei voi skaalata eri annoskokoihin)
-* koodia on tarkoitus siivota (esim. poistaa käyttämättömät metodit)
-* mahdollisuus lisätä/poistaa reseptiä ostoslistalta suoraan reseptien selailusivulle ja ostoslista-sivulle
-* timestamp täytyy korjata, ei näytä olevan Suomen aikavyöhyke asetettu
-* jos jää aikaa tai on kurssin jälkeen intoa kehittää, niin voisi lisäillä suosikkireseptien ja usean ostoslistan tallenusmahdollisuuden, käyttäjäryhmät (yksityiset reseptipankit ja kommentoinnit), admin-näkymän, valmistusajat resepteille
+* tietokannan osoite ja sovelluksen käyttämä salainen avain on tallennettu yksityiseen ympäristömuuttujaan
+* käyttäjien salasanat tallennetaan selkokielesen sanan sijaan hajautusarvona
+* kirjautuneiden käyttäjien tunnistamiseen käytetään Flask:in session-oliota
+* istuntoon (session) tallennetaan myös satunnainen tieto (csrf-token), jolla estetetään CSRF-haavoittuvuus
+* käyttäjän antamia syötteitä ei näytetä sivuilla tai tallenneta tietokantaa sellaisenaan (estetään XSS-haavoittuvuus ja SQL-injektio)
+* lomakkeiden syötteitä (lähinnä pituus) tarkistetaan HTML:n sekä JavaScriptin avulla
+* jos JS ei ole käytössä, niin syötteet varmuuden vuoksi tarkistetaan myös Python -koodissa
+
+## Sovelluksen puutteet / kehitysajatukset
+
+* ulkoasuun ei ole löytynyt aikaa panostaa riittävästi, käytössä on toistaiseksi kohtalaisen vakioasetuksilla Bootstrap -elementtejä
+* reseptin ainesosien ja erityisesti määrien suhteen tahtoisin rakentaa paremman ratkaisun siihen, että miten huomioidaan ainesosat, joille ei ole antaa tarkkoja määriä. Mietin, että käyttäjä voisi syöttää esim. erikseen ainesosat, joille voi antaa tarkan määrän ja sitten olisi erillinen listaus esim. mausteille tai määrien vapaamuotoista määrittelyä varten. Nyt sovellus yksinkertaisesti muuttaa määrän lukuarvoon 0, jos käyttäjä on antanut kyseiseen kohtaan sanallisen kuvauksen tai epäkelpoja merkkejä.
+* ostoslistan ulkoasua ja toiminnallisuutta tahtoisin hioa (linkit resepteihin, mahdollisuus poistaa suoraan yksittäisiä reseptejä, tulostus tekstitiedostona)
+* lisäksi mielessä on ollut suosikkireseptien ja usean ostoslistan tallennusmahdollisuuden, käyttäjäryhmät (yksityiset reseptipankit ja kommentoinnit), admin-näkymän, valmistusajat resepteille
 
 ### Alkuperäinen info/kehitysajatus alla
 
