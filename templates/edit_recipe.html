@@ -8,8 +8,17 @@
 
 <div class="container">
   <div class="row">
+
+    {% if message|length %}
+
+    <div class="alert alert-warning" role="alert">
+      {{ message }}
+    </div>
+
+    {% endif %}
+
     <h5>Voit muokata reseptin tietoja</h3>
-    <form class="needs-validation" action="{{ request.path }}" method="POST">
+    <form class="needs-validation" action="{{ request.path }}" method="POST" onsubmit="return check(this)">
 
       <div class="form-group">
         <label for="recipe_name">Reseptin nimi</label>
@@ -96,29 +105,53 @@
 
 <script type="text/JavaScript">
 
-    function createNewElement() {
-        // First create a DIV element.
-        var txtNewInputBox = document.createElement('div');
-        txtNewInputBox.class="container"
-    
-        // Then add the content (a new input box) of the element.
-        txtNewInputBox.innerHTML = `{% include "ingredient_input_form.html" %}`
-    
-        // Finally put it where it is supposed to appear.
-        document.getElementById("newElementId").appendChild(txtNewInputBox);
+  function createNewElement() {
+    // First create a DIV element.
+    var txtNewInputBox = document.createElement('div');
+    txtNewInputBox.class="container"
+
+    // Then add the content (a new input box) of the element.
+    txtNewInputBox.innerHTML = `{% include "ingredient_input_form.html" %}`
+
+    // Finally put it where it is supposed to appear.
+    document.getElementById("newElementId").appendChild(txtNewInputBox);
+  }
+
+  function deleteLastElement() {
+    // Get the correct DIV element.
+    var toDelete = document.getElementById("newElementId")
+
+    // Check if any rows have been added
+    if (toDelete.childNodes.length > 1) {     
+
+      // Remove last child
+      toDelete.removeChild(toDelete.lastChild)
     }
+  }
 
-    function deleteLastElement() {
-        // Get the correct DIV element.
-        var toDelete = document.getElementById("newElementId")
-
-        // Check if any rows have been added
-        if (toDelete.childNodes.length > 1) {     
-
-            // Remove last child
-            toDelete.removeChild(toDelete.lastChild)
-        }
+  function check(form) {
+    if (form.recipe_name.value.length > 100) {
+      alert("Reseptin nimi saa sisältää enintään 100 merkkiä");
+      return false;
     }
+    if (form.description.value.length > 1000) {
+      alert("Kuvaus saa sisältää enintään 1000 merkkiä)");
+      return false;
+    }
+    if (form.instructions.value.length > 2000) {
+      alert("Ohje saa sisältää enintään 2000 merkkiä");
+      return false;
+    }
+    if (form.ingredient.value.length > 100) {
+      alert("Ainesosan nimi saa sisältää enintään 100 merkkiä");
+      return false;
+    }
+    if (form.amount.value.length > 100) {
+      alert("Määrä saa sisältää enintään 100 merkkiä (käytä myös kokonaislukuja, jos 'maun mukaan' ei ole valittuna)");
+      return false;
+    }
+    return true;
+  }
 
 </script>
 
