@@ -18,7 +18,7 @@ Tietojen tallentamiseen käytetään taustalla PostgreSQL -tietokantaa.
 * sovellukseen jätettyjä reseptejä voi selailla, hakea nimen perusteella ja järjestellä
 * reseptin ohjetta voi tarkistella
 * reseptiin voi lisätä kommentteja ja lukea muiden jättämiä kommentteja
-* reseptin voi lisätä ostoslistalle tai poistaa sieltä
+* reseptin voi lisätä ostoslistalle tai poistaa sieltä (toiminto reseptin omalla sivulla)
 * ostoslistalla voi valita annosten lukumäärän ja ainesosat skaalautuvat
 * ostoslistan voi tyhjentää kokonaan
 
@@ -36,7 +36,7 @@ Tietojen tallentamiseen käytetään taustalla PostgreSQL -tietokantaa.
 
 * ulkoasuun ei ole löytynyt aikaa panostaa riittävästi, käytössä on toistaiseksi kohtalaisen vakioasetuksilla Bootstrap -elementtejä
 * reseptin ainesosien ja erityisesti määrien suhteen tahtoisin rakentaa paremman ratkaisun siihen, että miten huomioidaan ainesosat, joille ei ole antaa tarkkoja määriä. Mietin, että käyttäjä voisi syöttää esim. erikseen ainesosat, joille voi antaa tarkan määrän ja sitten olisi erillinen listaus esim. mausteille tai määrien vapaamuotoista määrittelyä varten. Nyt sovellus yksinkertaisesti muuttaa määrän lukuarvoon 0, jos käyttäjä on antanut kyseiseen kohtaan sanallisen kuvauksen tai epäkelpoja merkkejä.
-* ostoslistan ulkoasua ja toiminnallisuutta tahtoisin hioa (linkit resepteihin, mahdollisuus poistaa suoraan yksittäisiä reseptejä, tulostus tekstitiedostona)
+* ostoslistan ulkoasua ja toiminnallisuutta tahtoisin hioa (erityisesti suorat linkit resepteihin, mahdollisuus poistaa suoraan yksittäisiä reseptejä, tulostus tekstitiedostona)
 * lisäksi mielessä on ollut suosikkireseptien ja usean ostoslistan tallennusmahdollisuuden, käyttäjäryhmät (yksityiset reseptipankit ja kommentoinnit), admin-näkymän, valmistusajat resepteille
 
 ### Alkuperäinen info/kehitysajatus alla
