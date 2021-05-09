@@ -18,7 +18,11 @@
       <h5>Ainekset</h5>
       <ul>
         {% for item in ingredients %}
+        {% if item[2] == 0 %}
+        <li>{{ item[1] }} {{ item[3] }}</li>
+        {% else %}
         <li>{{ item[1] }} {{ item[2] }} {{ item[3] }}</li>
+        {% endif %}
         {% endfor %}
       </ul>
 
