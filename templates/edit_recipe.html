@@ -75,6 +75,8 @@
         <button type="submit" class="btn btn-primary">Tallenna reseptin tiedot</button>
       </div>
 
+      <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}">
+
     </form>
 
   </div>

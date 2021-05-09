@@ -1,3 +1,4 @@
+from os import abort
 from werkzeug.security import check_password_hash
 from app import app
 from flask import render_template, request, redirect, session
@@ -5,16 +6,20 @@ import users
 import recipes
 import comments
 import shopping_list
+import secrets
 
 
 @app.route("/")
 def index():
     # front page, not much content - just some info about the app
 
-    # bug fix, old users might have just user_id saved session
+    # bug fix, old logged-in users might have had just user_id saved in session - user_name and csrf_token were added later
     if users.user_id():
         if not session.get("user_name", 0):
             session["user_name"] = users.user_name()
+
+        if not session.get("csrf_token", 0):
+            session["csrf_token"] = secrets.token_hex(16)
 
     return render_template("index.html")
 
@@ -59,6 +64,8 @@ def new_recipe():
         return render_template("add_recipe.html")
     if request.method == "POST":
         form = request.form
+        if session["csrf_token"] != form["csrf_token"]:
+            abort(403)
         recipe_name = form["recipe_name"]
         portions = int(form["portions"])
         description = form["description"]
@@ -104,6 +111,8 @@ def recipes_show():
 @app.route("/recipe/<int:recipe_id>", methods=["GET", "POST"])
 def recipe(recipe_id):
     if request.method == "POST":
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
         comment = request.form["comment"]
         if not comments.add_comment(comment, recipe_id):
             return render_template("error.html", message="Kommentin lisääminen epäonnistui")
@@ -126,8 +135,8 @@ def profile():
             # user is not logged in, render log in option
             return render_template("profile.html", logged=username)
     # get all recipes made by current user
-    users_recipes = recipes.made_by_user(users.user_id())
-    return render_template("profile.html", logged=True, username=username, users_recipes=users_recipes)
+        users_recipes = recipes.made_by_user(users.user_id())
+        return render_template("profile.html", logged=True, username=username, users_recipes=users_recipes)
 
         # if user is logging in, replaces old separate login page
     if request.method == "POST":
@@ -140,6 +149,8 @@ def profile():
 
 @app.route("/grade", methods=["POST"])
 def grade():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     recipe_id = request.form["r_id"]
     recipe_grade = request.form["grade"]
     u_id = users.user_id()
@@ -177,6 +188,8 @@ def edit_recipe(recipe_id):
 
     if request.method == "POST":
         form = request.form
+        if session["csrf_token"] != form["csrf_token"]:
+            abort(403)
         recipe_name = form["recipe_name"]
         portions = int(form["portions"])
         description = form["description"]
@@ -204,6 +217,9 @@ def shopping_cart():
     
     if request.method == "POST":
 
+        if session["csrf_token"] != request.form["csrf_token"]:
+            abort(403)
+
         portions = request.form["old_value"]
 
         try:
@@ -224,6 +240,8 @@ def shopping_cart():
 
 @app.route("/shopping-list/edit", methods=["POST"])
 def edit_shopping_list():
+    if session["csrf_token"] != request.form["csrf_token"]:
+        abort(403)
     recipe_id = request.form["recipe_id"]
     u_id = users.user_id()
 
